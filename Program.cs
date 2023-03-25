@@ -1,6 +1,10 @@
 using System.Text.Json.Serialization;
 using backend.Helpers;
 using backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 {
     var services = builder.Services;
     var env = builder.Environment;
-    
- 
+
+
     services.AddDbContext<DataContext>();
     services.AddCors();
     services.AddSwaggerGen();
@@ -25,6 +29,23 @@ var builder = WebApplication.CreateBuilder(args);
 
     // configure DI for application services
     services.AddScoped<IUserService, UserService>();
+    builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt =>
+{
+    opt.RequireHttpsMetadata = false; // for development only
+    opt.SaveToken = true;
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWT:SecretKey"])),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+});
 }
 
 var app = builder.Build();
@@ -34,6 +55,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // configure HTTP request pipeline
 {

@@ -5,9 +5,7 @@ using backend.Entities;
 
 public class CreateRequest
 {
-    [Required]
-    public string Title { get; set; } = null!;
-
+   
     [Required]
     public string FirstName { get; set; } = null!;
 

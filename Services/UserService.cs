@@ -5,9 +5,15 @@ using BCrypt.Net;
 using backend.Entities;
 using backend.Helpers;
 using backend.Models.Users;
+using backend.Models.Common;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
 
 public interface IUserService
 {
+    public Task<Tokens> Login(string email, string password);
     IEnumerable<User> GetAll();
     User GetById(int id);
     void Create(CreateRequest model);
@@ -19,13 +25,49 @@ public class UserService : IUserService
 {
     private DataContext _context;
     private readonly IMapper _mapper;
+    public readonly IConfiguration configuration;
 
     public UserService(
         DataContext context,
-        IMapper mapper)
+        IConfiguration Configuration,
+        IMapper mapper
+        )
     {
         _context = context;
         _mapper = mapper;
+        configuration = Configuration;
+    }
+
+    public async Task<Tokens> Login(string email, string password)
+    {
+        int id = _context.Users.Where(m => m.Email == email).Select(m => m.Id).SingleOrDefault();
+
+        User? user = getUser(id);
+
+        if (user == null || BCrypt.Verify(password, user.PasswordHash) == false)
+        {
+            return null; //returning null intentionally to show that login was unsuccessful
+        }
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(configuration["JWT:SecretKey"]);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new Claim[]
+            {
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.GivenName, user.FirstName.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role.ToString())
+            }),
+            IssuedAt = DateTime.UtcNow,
+            Expires = DateTime.UtcNow.AddMinutes(30),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return new Tokens { Token = tokenHandler.WriteToken(token) };
     }
 
     public IEnumerable<User> GetAll()

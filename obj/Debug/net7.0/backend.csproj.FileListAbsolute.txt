@@ -46,3 +46,10 @@
 /home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.Extensions.DependencyModel.dll
 /home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Mono.TextTemplating.dll
 /home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/System.CodeDom.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/home/kasun-webmotech/Desktop/esoft/AD2-coursework/backend/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll

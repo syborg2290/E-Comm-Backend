@@ -3,10 +3,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.Users;
+using backend.Models.Common;
 using backend.Services;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class UsersController : ControllerBase
 {
     private IUserService _userService;
@@ -34,9 +37,34 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
+    // POST: auth/login
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] LoginUser user)
+    {
+        if (String.IsNullOrEmpty(user.Email))
+        {
+            return BadRequest(new { message = "Email address needs to entered" });
+        }
+        else if (String.IsNullOrEmpty(user.Password))
+        {
+            return BadRequest(new { message = "Password needs to entered" });
+        }
+
+        Tokens token = await _userService.Login(user.Email, user.Password);
+
+        if (token != null)
+        {
+            return Ok(token);
+        }
+
+        return BadRequest(new { message = "User login unsuccessful" });
+    }
+
     [HttpPost]
     public IActionResult Create(CreateRequest model)
     {
+        //  Console.WriteLine(model);
         _userService.Create(model);
         return Ok(new { message = "User created" });
     }
