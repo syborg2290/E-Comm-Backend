@@ -29,6 +29,10 @@ var builder = WebApplication.CreateBuilder(args);
 
     // configure DI for application services
     services.AddScoped<IUserService, UserService>();
+    services.AddScoped<ICustomerService, CustomerService>();
+    services.AddScoped<ICommonService, CommonService>();
+    services.AddScoped<IAddressService, AddressService>();
+
     builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

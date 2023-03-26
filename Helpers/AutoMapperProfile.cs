@@ -3,6 +3,8 @@ namespace backend.Helpers;
 using AutoMapper;
 using backend.Entities;
 using backend.Models.Users;
+using backend.Models.Customer;
+using backend.Models.Address;
 
 public class AutoMapperProfile : Profile
 {
@@ -26,5 +28,10 @@ public class AutoMapperProfile : Profile
                     return true;
                 }
             ));
+
+        // CreateRequest -> Customer
+        CreateMap<CreateRequestCustomer, Customer>();
+        CreateMap<CreateCustomer, Customer>();
+        CreateMap<CreateRequestAddress, Address>();
     }
 }
