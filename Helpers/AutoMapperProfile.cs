@@ -5,6 +5,15 @@ using backend.Entities;
 using backend.Models.Users;
 using backend.Models.Customer;
 using backend.Models.Address;
+using backend.Models.Configuration;
+using backend.Models.Category;
+using backend.Models.ComputerModel;
+using backend.Models.DefaultConfiguration;
+using backend.Models.Item;
+using backend.Models.Order;
+using backend.Models.OrderItem;
+using backend.Models.Payment;
+using backend.Models.Series;
 
 public class AutoMapperProfile : Profile
 {
@@ -33,5 +42,14 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateRequestCustomer, Customer>();
         CreateMap<CreateCustomer, Customer>();
         CreateMap<CreateRequestAddress, Address>();
+        CreateMap<CreateRequestConfiguration, Configuration>();
+        CreateMap<CreateRequestCategory, Category>();
+        CreateMap<CreateRequestComputerModel, ComputerModel>();
+        CreateMap<CreateRequestDefaultConfiguration, DefaultConfiguration>();
+        CreateMap<CreateRequestItem, Item>();
+        CreateMap<CreateRequestOrder, Order>();
+        CreateMap<CreateRequestOrderItem, OrderItem>();
+        CreateMap<CreateRequestPayment, Payment>();
+        CreateMap<CreateRequestSeries, Series>();
     }
 }
