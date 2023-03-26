@@ -39,7 +39,9 @@ public class ItemController : ControllerBase
         return Ok(item);
     }
 
+
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create(CreateRequestItem model)
     {
 
@@ -50,6 +52,7 @@ public class ItemController : ControllerBase
 
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Delete(int id)
     {
         Item item = _itemService.GetById(id);

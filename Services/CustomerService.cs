@@ -12,6 +12,7 @@ public interface ICustomerService
 
     IEnumerable<Customer> GetAll();
     Customer GetById(int id);
+    Customer GetByUserId(int id);
     void Create(CreateRequestCustomer model, string token);
     void Delete(int id);
 }
@@ -69,6 +70,21 @@ public class CustomerService : ICustomerService
         }
 
     }
+
+    public Customer GetByUserId(int id)
+    {
+        try
+        {
+            return getCustomerByUserId(id);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+
+    }
+
 
     public void Create(CreateRequestCustomer model, string token)
     {
@@ -153,6 +169,22 @@ public class CustomerService : ICustomerService
         try
         {
             var customer = _context.Customers.Find(id);
+            if (customer == null) throw new KeyNotFoundException("Customer not found");
+            return customer;
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private Customer getCustomerByUserId(int id)
+    {
+        try
+        {
+            var customer = _context.Customers.Where(a => a.UserId == id).ToList()[0];
             if (customer == null) throw new KeyNotFoundException("Customer not found");
             return customer;
         }

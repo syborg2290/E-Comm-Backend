@@ -1,5 +1,5 @@
 using AutoMapper;
-using backend.Models.Payment;
+using backend.Models.Series;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,39 +9,39 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PaymentController : ControllerBase
+    public class SeriesController : ControllerBase
     {
-        private readonly IPaymentService _paymentService;
+        private readonly ISeriesService _seriesService;
         private readonly IMapper _mapper;
 
-        public PaymentController(IPaymentService paymentService, IMapper mapper)
+        public SeriesController(ISeriesService seriesService, IMapper mapper)
         {
-            _paymentService = paymentService;
+            _seriesService = seriesService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var models = _paymentService.GetAll();
+            var models = _seriesService.GetAll();
             return Ok(models);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var model = _paymentService.GetById(id);
+            var model = _seriesService.GetById(id);
             return Ok(model);
         }
 
         [HttpPost]
-        [Authorize(Roles = "User")]
-        public IActionResult Create([FromBody] CreateRequestPayment modelDto)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create([FromBody] CreateRequestSeries modelDto)
         {
             try
             {
-                _paymentService.Create(modelDto);
-                return Ok(new { message = "Payment created" });
+                _seriesService.Create(modelDto);
+                return Ok(new { message = "Series created" });
             }
             catch (ArgumentException ex)
             {
@@ -49,7 +49,7 @@ namespace backend.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An error occurred while creating the payment" });
+                return StatusCode(500, new { message = "An error occurred while creating the series" });
             }
         }
 
@@ -60,8 +60,8 @@ namespace backend.Controllers
         {
             try
             {
-                _paymentService.Delete(id);
-                return Ok(new { message = "Payment deleted" });
+                _seriesService.Delete(id);
+                return Ok(new { message = "Series deleted" });
             }
             catch (ArgumentException ex)
             {
@@ -69,7 +69,7 @@ namespace backend.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An error occurred while deleting the payment" });
+                return StatusCode(500, new { message = "An error occurred while deleting the series" });
             }
         }
     }

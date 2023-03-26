@@ -17,7 +17,6 @@ public class ConfigurationController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
     public IActionResult GetAll()
     {
         var configurations = _configurationService.GetAll();
@@ -25,7 +24,6 @@ public class ConfigurationController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Admin")]
     public IActionResult GetById(int id)
     {
         var configuration = _configurationService.GetById(id);
